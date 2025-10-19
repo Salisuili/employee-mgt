@@ -1,16 +1,30 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
 
-const prisma = new PrismaClient();
 
-// NextAuth configuration
+declare module "next-auth" {
+  interface Session {
+    user: {
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+      role: string;
+    };
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    role?: string;
+  }
+}
+
 const handler = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
-
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -18,57 +32,53 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("Please provide both email and password");
+        }
+
         const user = await prisma.user.findUnique({
-          where: { email: credentials?.email },
+          where: { email: credentials.email },
         });
 
         if (!user) {
           throw new Error("No user found with this email");
         }
 
-        // Compare password with hashed one in DB
-        const isValid = await bcrypt.compare(
-          credentials!.password,
-          user.password
-        );
-
+        const isValid = await bcrypt.compare(credentials.password, user.password);
         if (!isValid) {
           throw new Error("Invalid password");
         }
 
-        
-        return user;
+        return {
+          id: user.id.toString(),
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        };
       },
     }),
   ],
 
   session: {
-    strategy: "jwt", // Use JWT for faster, stateless sessions
+    strategy: "jwt",
   },
 
   callbacks: {
-    // Add the user role to the token
     async jwt({ token, user }) {
-      if (user) {
-        token.role = user.role;
-      }
+      if (user) token.role = user.role;
       return token;
     },
 
-    // Add the role to the session object
     async session({ session, token }) {
-      if (token) {
+      if (session.user) {
         session.user.role = token.role ?? "employee";
       }
       return session;
     },
   },
 
-  // Secret for encryption (must be in .env)
   secret: process.env.NEXTAUTH_SECRET,
 
-  // Redirect users to your custom login page
   pages: {
     signIn: "/login",
   },

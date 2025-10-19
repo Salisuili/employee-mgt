@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
+import SessionProviderWrapper from "@/components/providers/SessionProviderWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +16,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Employee Management System",
-  description: "Employee management system for companies looking to improve how they manage their employees.",
+  description:
+    "Employee management system for companies looking to improve how they manage their employees.",
 };
 
 export default function RootLayout({
@@ -27,7 +30,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <SessionProviderWrapper>
+          {children}
+          <Toaster />
+        </SessionProviderWrapper>
       </body>
     </html>
   );
