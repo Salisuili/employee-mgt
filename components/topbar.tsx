@@ -10,7 +10,7 @@ export default function Topbar() {
     <header className="flex justify-between items-center px-6 py-3 border-b bg-white">
       <h1 className="text-lg font-semibold">Dashboard</h1>
       <div className="flex items-center gap-3">
-        <span className="text-sm text-gray-700">{session?.user?.email}</span>
+        <span className="text-sm text-gray-700">{session?.user?.name}</span>
         <Button variant="outline" size="sm" onClick={() => signOut({ callbackUrl: "/" })}>
           Logout
         </Button>

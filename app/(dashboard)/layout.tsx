@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { AppSidebar } from "@/components/sidebar";
 import Topbar from "@/components/topbar";
@@ -11,11 +11,11 @@ export default function DashboardLayout({
 }) {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen">
+      <div className="h-screen w-screen flex overflow-hidden">
         <AppSidebar />
-        <div className="flex-1 flex flex-col bg-gray-50">
+        <div className="flex flex-col flex-1 h-full bg-gray-50 p-2">
           <Topbar />
-          <main className="flex-1 p-6">{children}</main>
+          <main className="flex-1 overflow-y-auto p-6">{children}</main>
         </div>
       </div>
     </SidebarProvider>

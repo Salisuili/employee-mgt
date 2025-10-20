@@ -21,7 +21,7 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-      <p className="text-gray-600">Welcome, {session.user?.name || "Admin"} 👋</p>
+      <p className="text-gray-600">Welcome, {session.user?.name || "Admin"} </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white shadow rounded-lg p-4">
