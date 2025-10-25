@@ -12,6 +12,7 @@ declare module "next-auth" {
       email?: string | null;
       image?: string | null;
       role: string;
+      accessToken?: string;
     };
   }
 }
@@ -19,6 +20,7 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     role?: string;
+    accessToken?: string;
   }
 }
 
@@ -72,6 +74,7 @@ const handler = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.role = token.role ?? "employee";
+        session.user.accessToken = token.accessToken;
       }
       return session;
     },

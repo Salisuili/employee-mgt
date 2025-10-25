@@ -28,18 +28,18 @@ export function AppSidebar() {
   const role = session?.user?.role;
 
   const adminLinks = [
-    { title: "Dashboard", href: "/dashboard", icon: Home },
-    { title: "Employees", href: "/dashboard/employees", icon: Users },
-    { title: "Departments", href: "/dashboard/departments", icon: Building },
-    { title: "Attendance", href: "/dashboard/attendance", icon: ClipboardList },
-    { title: "Notifications", href: "/dashboard/notifications", icon: Bell },
+    { title: "Dashboard", href: "/admin", icon: Home },
+    { title: "Employees", href: "/admin/employees", icon: Users },
+    { title: "Departments", href: "/admin/departments", icon: Building },
+    { title: "Attendance", href: "/admin/attendance", icon: ClipboardList },
+    { title: "Notifications", href: "/admin/notifications", icon: Bell },
   ];
 
   const employeeLinks = [
-    { title: "Dashboard", href: "/dashboard", icon: Home },
-    { title: "Profile", href: "/dashboard/profile", icon: UserCircle2 },
-    { title: "Attendance", href: "/dashboard/attendance", icon: ClipboardList },
-    { title: "Notifications", href: "/dashboard/notifications", icon: Bell },
+    { title: "Dashboard", href: "/employee", icon: Home },
+    { title: "Profile", href: "/employee/profile", icon: UserCircle2 },
+    { title: "Attendance", href: "/employee/attendance", icon: ClipboardList },
+    { title: "Notifications", href: "/employee/notifications", icon: Bell },
   ];
 
   const links = role === "ADMIN" ? adminLinks : employeeLinks;
